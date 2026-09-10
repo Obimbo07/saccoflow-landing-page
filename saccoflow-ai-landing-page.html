@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saccoflow AI — The intelligence layer for modern SACCOs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#EEF0E6;
+    --bg-alt:#E3E7D8;
+    --paper:#F8F7F0;
+    --ink:#0E1F16;
+    --ink-soft:#3D4B41;
+    --ink-faint:#6C776D;
+    --gold:#B6862F;
+    --teal:#1F6F5C;
+    --rust:#B2492E;
+    --line: rgba(14,31,22,0.16);
+    --line-soft: rgba(14,31,22,0.08);
+    --radius: 3px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} *{animation:none !important; transition:none !important;} }
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    line-height:1.08;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  p{margin:0;}
+  a{color:inherit;}
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+  .wrap{ max-width:1180px; margin:0 auto; padding:0 32px; }
+  @media (max-width:640px){ .wrap{ padding:0 20px; } }
+
+  a:focus-visible, button:focus-visible, .tab:focus-visible{
+    outline:2px solid var(--teal);
+    outline-offset:3px;
+  }
+
+  /* ---------- NAV ---------- */
+  header.site{
+    position:sticky; top:0; z-index:50;
+    background:rgba(238,240,230,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 0;
+  }
+  .brand{
+    display:flex; align-items:baseline; gap:8px;
+    font-family:'Fraunces', serif; font-weight:600; font-size:1.35rem;
+    text-decoration:none; color:var(--ink);
+  }
+  .brand small{
+    font-family:'IBM Plex Sans', sans-serif; font-weight:500; font-size:0.62rem;
+    color:var(--ink-faint); letter-spacing:0.02em;
+  }
+  nav.links{ display:flex; gap:30px; }
+  nav.links a{
+    text-decoration:none; color:var(--ink-soft); font-size:0.94rem;
+    border-bottom:1px solid transparent; padding-bottom:2px;
+  }
+  nav.links a:hover{ color:var(--ink); border-bottom-color:var(--gold); }
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    padding:11px 22px; font-size:0.92rem; font-weight:500;
+    border-radius:var(--radius); text-decoration:none; cursor:pointer;
+    border:1px solid var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+  }
+  .btn-primary{ background:var(--ink); color:var(--paper); }
+  .btn-primary:hover{ background:var(--teal); border-color:var(--teal); }
+  .btn-ghost{ background:transparent; color:var(--ink); border-color:var(--line); }
+  .btn-ghost:hover{ border-color:var(--ink); }
+  .nav-cta{ display:flex; gap:12px; }
+  .menu-toggle{ display:none; }
+  @media (max-width:860px){
+    nav.links{ display:none; }
+    .menu-toggle{
+      display:inline-flex; background:none; border:1px solid var(--line);
+      padding:8px 12px; border-radius:var(--radius);
+    }
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:76px 0 60px;
+    border-bottom:1px solid var(--line);
+    background:
+      linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
+  }
+  .hero-grid{
+    display:grid; grid-template-columns: 1.15fr 0.85fr; gap:56px; align-items:start;
+  }
+  @media (max-width:920px){ .hero-grid{ grid-template-columns:1fr; } }
+
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:0.82rem; color:var(--ink-soft);
+    padding:6px 12px; border:1px solid var(--line); border-radius:20px;
+    margin-bottom:22px; background:var(--paper);
+  }
+  .badge .dot{ width:6px; height:6px; border-radius:50%; background:var(--teal); }
+
+  .hero h1{
+    font-size:clamp(2.3rem, 4.6vw, 3.6rem);
+    max-width:15ch;
+    color:var(--ink);
+  }
+  .hero .lede{
+    margin-top:22px; font-size:1.15rem; color:var(--ink-soft); max-width:46ch;
+  }
+  .hero-actions{ display:flex; gap:14px; margin-top:32px; flex-wrap:wrap; }
+
+  /* passbook stat panel */
+  .passbook{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:0;
+    overflow:hidden;
+    box-shadow: 0 1px 0 var(--line);
+    animation: stamp 700ms cubic-bezier(.2,.8,.2,1) both;
+  }
+  @keyframes stamp{
+    from{ opacity:0; transform:translateY(10px) scale(0.985); }
+    to{ opacity:1; transform:translateY(0) scale(1); }
+  }
+  .passbook-head{
+    padding:16px 20px; border-bottom:1px dashed var(--line);
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .passbook-head span{ font-size:0.8rem; color:var(--ink-faint); }
+  .passbook-row{
+    display:flex; justify-content:space-between; align-items:baseline;
+    padding:18px 20px; border-bottom:1px solid var(--line-soft);
+  }
+  .passbook-row:last-child{ border-bottom:none; }
+  .passbook-row .label{ font-size:0.88rem; color:var(--ink-soft); max-width:20ch; }
+  .passbook-row .value{ font-family:'IBM Plex Mono', monospace; font-size:1.5rem; color:var(--ink); white-space:nowrap; margin-left:16px; }
+  .passbook-row .value.teal{ color:var(--teal); }
+  .passbook-row .value.gold{ color:var(--gold); }
+
+  /* ---------- SECTION HEADS ---------- */
+  section{ padding:88px 0; border-bottom:1px solid var(--line); }
+  section:last-of-type{ border-bottom:none; }
+  .section-head{ max-width:640px; margin-bottom:52px; }
+  .section-head h2{ font-size:clamp(1.7rem,3vw,2.3rem); }
+  .section-head p{ margin-top:14px; color:var(--ink-soft); font-size:1.05rem; }
+
+  /* ---------- PROBLEM / SOLUTION / OUTCOME ---------- */
+  .pso{ display:grid; grid-template-columns:repeat(3,1fr); gap:0; border:1px solid var(--line); border-radius:4px; overflow:hidden; }
+  @media (max-width:820px){ .pso{ grid-template-columns:1fr; } }
+  .pso > div{ padding:34px 30px; background:var(--paper); }
+  .pso > div + div{ border-left:1px solid var(--line); }
+  @media (max-width:820px){ .pso > div + div{ border-left:none; border-top:1px solid var(--line); } }
+  .pso .num{ font-family:'IBM Plex Mono', monospace; color:var(--gold); font-size:0.95rem; }
+  .pso h3{ font-size:1.25rem; margin-top:10px; }
+  .pso p.body{ margin-top:12px; color:var(--ink-soft); font-size:0.96rem; }
+  .pso .metric{ margin-top:18px; font-family:'IBM Plex Mono', monospace; color:var(--teal); font-size:1.05rem; }
+
+  /* ---------- HOW IT WORKS ---------- */
+  .flow{ counter-reset:step; display:flex; flex-direction:column; }
+  .flow-step{
+    display:grid; grid-template-columns:64px 1fr; gap:20px;
+    padding:22px 0; border-top:1px solid var(--line-soft);
+  }
+  .flow-step:last-child{ border-bottom:1px solid var(--line-soft); }
+  .flow-step .idx{ font-family:'IBM Plex Mono', monospace; color:var(--ink-faint); font-size:0.95rem; padding-top:2px; }
+  .flow-step h4{ font-family:'IBM Plex Sans', sans-serif; font-weight:600; font-size:1.02rem; }
+  .flow-step p{ margin-top:6px; color:var(--ink-soft); font-size:0.95rem; max-width:64ch; }
+
+  /* ---------- INTELLIGENCE ENGINES ---------- */
+  .engine{
+    border:1px solid var(--line); border-radius:4px; margin-bottom:16px;
+    background:var(--paper); overflow:hidden;
+  }
+  .engine-head{
+    width:100%; display:flex; align-items:center; justify-content:space-between;
+    gap:20px; padding:22px 26px; background:transparent; border:none; cursor:pointer;
+    text-align:left; font-family:'Fraunces', serif; font-weight:600; font-size:1.15rem; color:var(--ink);
+  }
+  .engine-head .tag{
+    font-family:'IBM Plex Mono', monospace; font-weight:400; font-size:0.78rem;
+    color:var(--ink-faint); white-space:nowrap;
+  }
+  .engine-body{
+    max-height:0; overflow:hidden; transition:max-height 320ms ease;
+    border-top:1px solid var(--line-soft);
+  }
+  .engine.open .engine-body{ max-height:520px; }
+  .engine-body-inner{ padding:6px 26px 26px; display:grid; grid-template-columns:1.1fr 0.9fr; gap:30px; }
+  @media (max-width:760px){ .engine-body-inner{ grid-template-columns:1fr; } }
+  .engine-body-inner p{ color:var(--ink-soft); font-size:0.96rem; }
+  .readout{
+    background:var(--ink); color:var(--paper); border-radius:4px;
+    padding:18px 20px; font-family:'IBM Plex Mono', monospace; font-size:0.82rem; line-height:1.75;
+  }
+  .readout .k{ color:#9FB3A6; }
+  .readout .accent{ color:#E4C878; }
+  .engine-plus{ font-size:1.3rem; color:var(--ink-faint); transition:transform 220ms ease; flex-shrink:0; }
+  .engine.open .engine-plus{ transform:rotate(45deg); }
+
+  /* ---------- COMPARISON ---------- */
+  .compare-table{ width:100%; border-collapse:collapse; font-size:0.92rem; }
+  .compare-table th, .compare-table td{
+    text-align:left; padding:14px 16px; border-bottom:1px solid var(--line-soft);
+    vertical-align:top;
+  }
+  .compare-table thead th{
+    font-family:'IBM Plex Mono', monospace; font-weight:500; font-size:0.76rem;
+    color:var(--ink-faint); border-bottom:1px solid var(--line);
+  }
+  .compare-table tbody tr.us{ background:var(--paper); }
+  .compare-table tbody tr.us td{ font-weight:500; }
+  .compare-table td.cat{ color:var(--ink); white-space:nowrap; }
+  .compare-table td.strength{ color:var(--ink-soft); }
+  .compare-scroll{ overflow-x:auto; border:1px solid var(--line); border-radius:4px; }
+  .compare-scroll table{ min-width:680px; }
+  .compare-scroll .compare-table thead th, .compare-scroll .compare-table td{ padding-left:20px; padding-right:20px; }
+
+  .works-with{
+    margin-top:44px; padding-top:36px; border-top:1px solid var(--line);
+  }
+  .works-with p.eyebrow{ color:var(--ink-faint); font-size:0.9rem; }
+  .wordmarks{ display:flex; flex-wrap:wrap; gap:14px 34px; margin-top:20px; }
+  .wordmarks span{
+    font-family:'Fraunces', serif; font-weight:500; font-size:1.15rem; color:var(--ink-soft);
+  }
+
+  /* ---------- PACKAGES ---------- */
+  .packages{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  @media (max-width:920px){ .packages{ grid-template-columns:1fr; } }
+  .package{
+    border:1px solid var(--line); border-radius:4px; padding:32px 28px;
+    background:var(--paper); display:flex; flex-direction:column;
+  }
+  .package.feat{ border-color:var(--ink); position:relative; }
+  .package .kicker{ font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:var(--ink-faint); }
+  .package h3{ margin-top:10px; font-size:1.5rem; }
+  .package .for{ margin-top:8px; color:var(--ink-soft); font-size:0.92rem; }
+  .package ul{ list-style:none; margin:26px 0 0; padding:0; flex-grow:1; }
+  .package li{
+    padding:10px 0; border-top:1px solid var(--line-soft); font-size:0.92rem; color:var(--ink-soft);
+    display:flex; gap:10px;
+  }
+  .package li::before{ content:"—"; color:var(--gold); flex-shrink:0; }
+  .package .btn{ margin-top:28px; width:100%; }
+
+  /* ---------- CONTACT ---------- */
+  .contact-grid{ display:grid; grid-template-columns:1.1fr 0.9fr; gap:60px; }
+  @media (max-width:860px){ .contact-grid{ grid-template-columns:1fr; gap:36px; } }
+  .contact-block h2{ font-size:clamp(1.8rem,3.4vw,2.4rem); max-width:14ch; }
+  .contact-block p.lede{ margin-top:16px; color:var(--ink-soft); font-size:1.05rem; max-width:44ch; }
+  .contact-details{ margin-top:34px; display:flex; flex-direction:column; gap:20px; }
+  .contact-row{ display:flex; gap:16px; align-items:baseline; }
+  .contact-row .k{ font-family:'IBM Plex Mono', monospace; font-size:0.76rem; color:var(--ink-faint); width:90px; flex-shrink:0; }
+  .contact-row .v{ font-size:1rem; color:var(--ink); }
+  .contact-row a.v{ text-decoration:none; border-bottom:1px solid var(--line); }
+  .contact-row a.v:hover{ border-color:var(--gold); }
+
+  .ledger-card{ background:var(--ink); color:var(--paper); border-radius:4px; padding:36px 32px; }
+  .ledger-card p.small{ color:#9FB3A6; font-size:0.85rem; }
+  .ledger-card h3{ margin-top:10px; font-size:1.3rem; }
+  .ledger-card .field{ margin-top:22px; }
+  .ledger-card label{ display:block; font-size:0.8rem; color:#9FB3A6; margin-bottom:6px; }
+  .ledger-card input, .ledger-card select, .ledger-card textarea{
+    width:100%; background:rgba(248,247,240,0.06); border:1px solid rgba(248,247,240,0.25);
+    color:var(--paper); padding:11px 12px; border-radius:3px; font-family:'IBM Plex Sans', sans-serif; font-size:0.95rem;
+  }
+  .ledger-card input::placeholder, .ledger-card textarea::placeholder{ color:#7C8B80; }
+  .ledger-card .btn-primary{ margin-top:24px; width:100%; background:var(--gold); border-color:var(--gold); color:var(--ink); font-weight:600; }
+  .ledger-card .btn-primary:hover{ background:#CBA04F; border-color:#CBA04F; }
+
+  footer.site{ padding:36px 0; }
+  .footer-row{ display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap; font-size:0.85rem; color:var(--ink-faint); }
+  .footer-row a{ text-decoration:none; color:var(--ink-faint); }
+  .footer-row a:hover{ color:var(--ink); }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap nav">
+    <a href="#" class="brand">Saccoflow <small>AI</small></a>
+    <nav class="links">
+      <a href="#platform">Platform</a>
+      <a href="#intelligence">Intelligence</a>
+      <a href="#compare">Positioning</a>
+      <a href="#packages">Packages</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="#contact" class="btn btn-primary">Talk to sales</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero" id="platform" style="border-top:none; padding-top:76px;">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="badge"><span class="dot"></span>A NairoBytes venture</span>
+      <h1>SACCOs run on trust. Now they can run on intelligence too.</h1>
+      <p class="lede">Saccoflow is the AI operating system for SACCO lending and member operations — risk scoring, KYC, collections and reporting handled by software, with your loans officer still making every call.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary">Talk to sales</a>
+        <a href="#platform-how" class="btn btn-ghost">See how it works</a>
+      </div>
+    </div>
+    <div class="passbook">
+      <div class="passbook-head">
+        <strong style="font-family:'Fraunces',serif;">Ledger</strong>
+        <span>as of today</span>
+      </div>
+      <div class="passbook-row">
+        <span class="label">SACCOs running on Saccoflow across East Africa</span>
+        <span class="value">100+</span>
+      </div>
+      <div class="passbook-row">
+        <span class="label">Loan processing time, before → after</span>
+        <span class="value teal">5d → 4h</span>
+      </div>
+      <div class="passbook-row">
+        <span class="label">Lift in member satisfaction scores</span>
+        <span class="value gold">+45%</span>
+      </div>
+      <div class="passbook-row">
+        <span class="label">Backed by</span>
+        <span class="value" style="font-size:1.05rem;">NairoBytes</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="platform-how">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Why SACCOs hit a wall before they hit a market</h2>
+      <p>The core workflows — onboarding, origination, risk, disbursement, repayment, support — are standard. The policy on top of them never is. That's why generic banking software gets rejected and paper survives.</p>
+    </div>
+
+    <div class="pso">
+      <div>
+        <span class="num mono">01</span>
+        <h3>Problem</h3>
+        <p class="body">Manual loan approvals, member onboarding and reporting mean slow turnaround, inconsistent risk calls, and no real analytics — usually run by one overworked loans officer.</p>
+      </div>
+      <div>
+        <span class="num mono">02</span>
+        <h3>Solution</h3>
+        <p class="body">AI-assisted risk assessment, automated KYC onboarding, live financial dashboards and a member chatbot, covering everything from application to disbursement with a full audit trail.</p>
+      </div>
+      <div>
+        <span class="num mono">03</span>
+        <h3>Outcome</h3>
+        <p class="body">SACCOs scale membership without scaling headcount, and officers work off a scored, ranked queue instead of a stack of paper files.</p>
+        <p class="metric">5 days → 4 hours &nbsp;·&nbsp; +45% satisfaction</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <h2>How a loan actually moves through Saccoflow</h2>
+      <p>One path, from a member's first message to money in their account.</p>
+    </div>
+    <div class="flow">
+      <div class="flow-step">
+        <span class="idx mono">01</span>
+        <div><h4>Member applies</h4><p>Through whichever channel the SACCO already uses — WhatsApp, USSD, or the web portal. No new habit to learn.</p></div>
+      </div>
+      <div class="flow-step">
+        <span class="idx mono">02</span>
+        <div><h4>Automated KYC</h4><p>ID and mobile-money history are checked automatically, before the application reaches a human.</p></div>
+      </div>
+      <div class="flow-step">
+        <span class="idx mono">03</span>
+        <div><h4>Risk scoring</h4><p>A model trained on SACCO-specific default patterns, augmented with the transactional data the SACCO already holds, scores the application.</p></div>
+      </div>
+      <div class="flow-step">
+        <span class="idx mono">04</span>
+        <div><h4>Officer reviews a ranked queue</h4><p>Not a stack of paper — a queue sorted by risk, with the reasoning behind every score. The officer still decides and approves.</p></div>
+      </div>
+      <div class="flow-step">
+        <span class="idx mono">05</span>
+        <div><h4>Disbursement over M-Pesa</h4><p>Funds move the moment an officer approves. No separate banking step, no manual entry.</p></div>
+      </div>
+      <div class="flow-step">
+        <span class="idx mono">06</span>
+        <div><h4>Repayment and support, automated</h4><p>Scheduling, reminders and grace periods run themselves. A member chatbot handles balances, statements and top-ups without a human touch.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="intelligence">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>The moat isn't the software. It's the intelligence layer.</h2>
+      <p>Loan processing and M-Pesa integration are table stakes now — most SACCO platforms have them. Saccoflow's edge is five engines that sit on top of any core.</p>
+    </div>
+
+    <div class="engines">
+      <div class="engine open">
+        <button class="engine-head" onclick="toggleEngine(this)">
+          <span>Credit intelligence</span>
+          <span class="tag">risk &amp; underwriting</span>
+        </button>
+        <div class="engine-body">
+          <div class="engine-body-inner">
+            <p>Not a bare score — a full underwriting readout. Every recommendation comes with a default probability, a suggested limit and term, and the specific factors driving it, so the officer gets a co-pilot instead of a black box.</p>
+            <div class="readout">
+<span class="k">Loan recommendation:</span> <span class="accent">Approve</span><br>
+<span class="k">Probability of default:</span> 3.8%<br>
+<span class="k">Recommended limit:</span> KES 185,000<br>
+<span class="k">Recommended term:</span> 12 months<br>
+<span class="k">Confidence:</span> 91%<br><br>
+<span class="k">Key factors —</span><br>
+&nbsp;&nbsp;18mo consistent contributions<br>
+&nbsp;&nbsp;94% historical repayment rate<br>
+&nbsp;&nbsp;stable income pattern
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="engine">
+        <button class="engine-head" onclick="toggleEngine(this)">
+          <span>Operations copilot</span>
+          <span class="tag">for SACCO managers</span>
+        </button>
+        <div class="engine-body">
+          <div class="engine-body-inner">
+            <p>Ask it directly, in plain language, instead of building another dashboard: portfolio growth this quarter, which products are defaulting, which branch is underperforming, or a ready management report.</p>
+            <div class="readout">
+"Which loan products have the<br>highest default rates?"<br><br>
+"Show me members likely to<br>default next month."<br><br>
+"Generate the management report."
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="engine">
+        <button class="engine-head" onclick="toggleEngine(this)">
+          <span>Member agent</span>
+          <span class="tag">WhatsApp · USSD · web</span>
+        </button>
+        <div class="engine-body">
+          <div class="engine-body-inner">
+            <p>A genuine agent, not a menu tree. A member can ask what they're eligible for and apply in the same conversation — balances, statements, top-ups and complaints included.</p>
+            <div class="readout">
+<span class="k">Member:</span> "How much can I borrow?"<br>
+<span class="k">Agent:</span> "You're eligible for up to<br>KES 185,000, based on your savings<br>and SACCO policy."<br>
+<span class="k">Member:</span> "Apply for it."<br>
+<span class="k">Agent:</span> Application started.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="engine">
+        <button class="engine-head" onclick="toggleEngine(this)">
+          <span>Collections intelligence</span>
+          <span class="tag">portfolio performance</span>
+        </button>
+        <div class="engine-body">
+          <div class="engine-body-inner">
+            <p>Instead of a blanket reminder, a prioritised queue of who's actually likely to slip — so the officer calls the member 4 days from default before sending an automated nudge to someone who was never at risk.</p>
+            <div class="readout">
+Member A — 87% risk — 4 days out — <span class="accent">Call</span><br>
+Member B — 61% risk — 11 days out — WhatsApp<br>
+Member C — 12% risk — — — Auto reminder
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="engine">
+        <button class="engine-head" onclick="toggleEngine(this)">
+          <span>Regulatory &amp; management intelligence</span>
+          <span class="tag">SASRA &amp; audit</span>
+        </button>
+        <div class="engine-body">
+          <div class="engine-body-inner">
+            <p>The monthly reporting package builds itself: data-completeness checks, anomaly detection, the required metrics, and an audit trail the officer reviews rather than assembles by hand.</p>
+            <div class="readout">
+"Prepare the monthly SASRA<br>reporting package."<br><br>
+1. Checking data completeness<br>
+2. Flagging anomalies<br>
+3. Calculating required metrics<br>
+4. Generating report + audit trail
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="compare">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Where Saccoflow sits in the market</h2>
+      <p>SACCO software in East Africa is a crowded field. Most of it competes on core banking features. Saccoflow doesn't try to out-feature the incumbents — it's the intelligence layer that can sit on top of any of them.</p>
+    </div>
+
+    <div class="compare-scroll">
+      <table class="compare-table">
+        <thead>
+          <tr><th>Category</th><th>Where they're strong</th><th>Where Saccoflow differs</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="cat">Legacy SACCO MIS</td>
+            <td class="strength">Deep, long-established SACCO-specific workflows</td>
+            <td class="strength">Adds a scoring, collections and reporting layer without a system replacement</td>
+          </tr>
+          <tr>
+            <td class="cat">Modern SACCO core</td>
+            <td class="strength">Modern UX, mobile money integrations, end-to-end platforms</td>
+            <td class="strength">Goes further on explainable underwriting, not just processing</td>
+          </tr>
+          <tr>
+            <td class="cat">Enterprise core banking</td>
+            <td class="strength">Enterprise-grade infrastructure and reliability</td>
+            <td class="strength">Faster to deploy on top of an existing core, no infrastructure migration</td>
+          </tr>
+          <tr>
+            <td class="cat">Digital lending platforms</td>
+            <td class="strength">Loan administration and disbursement automation</td>
+            <td class="strength">Purpose-built for SACCO governance, not generic MFI lending</td>
+          </tr>
+          <tr>
+            <td class="cat">AI lending infrastructure</td>
+            <td class="strength">AI-assisted credit decisioning</td>
+            <td class="strength">Extends AI past underwriting into collections, operations and compliance</td>
+          </tr>
+          <tr>
+            <td class="cat">Digital SACCO banking</td>
+            <td class="strength">Strong member-facing digital experience</td>
+            <td class="strength">Pairs the member experience with officer-facing decision support</td>
+          </tr>
+          <tr class="us">
+            <td class="cat">Saccoflow AI</td>
+            <td class="strength">100+ SACCOs live across East Africa, backed by NairoBytes</td>
+            <td class="strength">An AI-native intelligence layer — credit, operations, member, collections and compliance in one</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="works-with">
+      <p class="eyebrow">Built to sit alongside what you already run</p>
+      <div class="wordmarks">
+        <span>M-Pesa disbursement</span>
+        <span>SASRA reporting</span>
+        <span>WhatsApp &amp; USSD</span>
+        <span>Your existing SACCO core</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="packages">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Packages built around how your SACCO actually runs</h2>
+      <p>Every SACCO's policy is different, so every deployment is scoped with you. Talk to sales for a plan and a quote.</p>
+    </div>
+
+    <div class="packages">
+      <div class="package">
+        <span class="kicker mono">01 · Starter</span>
+        <h3>Foundations</h3>
+        <p class="for">For SACCOs digitising onboarding and loan processing for the first time.</p>
+        <ul>
+          <li>Automated member onboarding &amp; KYC</li>
+          <li>Digital loan application &amp; officer queue</li>
+          <li>M-Pesa disbursement &amp; repayment scheduling</li>
+          <li>Standard reporting dashboard</li>
+        </ul>
+        <a href="#contact" class="btn btn-ghost">Contact sales</a>
+      </div>
+
+      <div class="package feat">
+        <span class="kicker mono">02 · Growth</span>
+        <h3>Intelligence</h3>
+        <p class="for">For SACCOs ready to put AI underwriting and collections to work.</p>
+        <ul>
+          <li>Everything in Foundations</li>
+          <li>AI credit intelligence &amp; explainable scoring</li>
+          <li>Collections intelligence &amp; prioritised queues</li>
+          <li>Member AI agent on WhatsApp, USSD &amp; web</li>
+          <li>SASRA-ready audit trails</li>
+        </ul>
+        <a href="#contact" class="btn btn-primary">Contact sales</a>
+      </div>
+
+      <div class="package">
+        <span class="kicker mono">03 · Enterprise</span>
+        <h3>Federation</h3>
+        <p class="for">For SACCO federations and multi-branch networks running at scale.</p>
+        <ul>
+          <li>Everything in Intelligence</li>
+          <li>Operations copilot for management reporting</li>
+          <li>Multi-branch &amp; multi-SACCO administration</li>
+          <li>Integration with your existing core system</li>
+          <li>Dedicated NairoBytes deployment team</li>
+        </ul>
+        <a href="#contact" class="btn btn-ghost">Contact sales</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" style="border-bottom:none; padding-bottom:70px;">
+  <div class="wrap contact-grid">
+    <div class="contact-block">
+      <h2>Let's scope your SACCO's deployment</h2>
+      <p class="lede">Tell us where you are today — paper, spreadsheets, or an existing core — and we'll come back with a plan, not a pitch.</p>
+
+      <div class="contact-details">
+        <div class="contact-row">
+          <span class="k mono">Company</span>
+          <span class="v">Saccoflow AI, a NairoBytes venture</span>
+        </div>
+        <div class="contact-row">
+          <span class="k mono">Address</span>
+          <span class="v">Shalom House, Ngong Road, Nairobi, Kenya</span>
+        </div>
+        <div class="contact-row">
+          <span class="k mono">Phone</span>
+          <a class="v" href="tel:+254794570888">+254 794 570 888</a>
+        </div>
+        <div class="contact-row">
+          <span class="k mono">Sales</span>
+          <a class="v" href="mailto:sales@saccoflow.co.ke">sales@saccoflow.co.ke</a>
+        </div>
+        <div class="contact-row">
+          <span class="k mono">General</span>
+          <a class="v" href="mailto:hello@saccoflow.co.ke">hello@saccoflow.co.ke</a>
+        </div>
+        <div class="contact-row">
+          <span class="k mono">Support</span>
+          <a class="v" href="mailto:support@saccoflow.co.ke">support@saccoflow.co.ke</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="ledger-card">
+      <p class="small mono">New enquiry</p>
+      <h3>Talk to sales</h3>
+      <form onsubmit="event.preventDefault(); this.querySelector('button').textContent='Request sent';">
+        <div class="field">
+          <label for="name">Your name</label>
+          <input id="name" type="text" placeholder="Jane Wanjiru" required>
+        </div>
+        <div class="field">
+          <label for="sacco">SACCO name</label>
+          <input id="sacco" type="text" placeholder="e.g. Stima SACCO" required>
+        </div>
+        <div class="field">
+          <label for="size">Member base</label>
+          <select id="size">
+            <option>Under 5,000 members</option>
+            <option>5,000 – 20,000 members</option>
+            <option>20,000+ members</option>
+            <option>SACCO federation / network</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="email">Work email</label>
+          <input id="email" type="email" placeholder="you@yoursacco.co.ke" required>
+        </div>
+        <div class="field">
+          <label for="msg">What are you looking to solve?</label>
+          <textarea id="msg" rows="3" placeholder="e.g. our loan approvals still take a week"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Request a call</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap footer-row">
+    <span>© 2026 Saccoflow AI · Shalom House, Ngong Road, Nairobi · A NairoBytes venture</span>
+    <span><a href="https://nairobytes.co.ke" target="_blank" rel="noopener">nairobytes.co.ke</a></span>
+  </div>
+</footer>
+
+<script>
+  function toggleEngine(btn){
+    const engine = btn.parentElement;
+    const wasOpen = engine.classList.contains('open');
+    document.querySelectorAll('.engine').forEach(e => e.classList.remove('open'));
+    if(!wasOpen){ engine.classList.add('open'); }
+  }
+</script>
+
+</body>
+</html>
