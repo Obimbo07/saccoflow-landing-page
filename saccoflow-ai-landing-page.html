@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Saccoflow AI — The intelligence layer for modern SACCOs</title>
+<title>Saccoflow — Make your SACCO easier to use</title>
+<meta name="description" content="Saccoflow works with the SACCO system you already have, and gives your members a simple way to save, borrow, deposit, withdraw and repay from their phone — with AI helping them along the way.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -206,8 +207,9 @@
     max-height:0; overflow:hidden; transition:max-height 320ms ease;
     border-top:1px solid var(--line-soft);
   }
-  .engine.open .engine-body{ max-height:520px; }
+  .engine.open .engine-body{ max-height:760px; }
   .engine-body-inner{ padding:6px 26px 26px; display:grid; grid-template-columns:1.1fr 0.9fr; gap:30px; }
+  .engine-body-inner.single{ grid-template-columns:1fr; }
   @media (max-width:760px){ .engine-body-inner{ grid-template-columns:1fr; } }
   .engine-body-inner p{ color:var(--ink-soft); font-size:0.96rem; }
   .readout{
@@ -216,6 +218,19 @@
   }
   .readout .k{ color:#9FB3A6; }
   .readout .accent{ color:#E4C878; }
+  .readout .cap{
+    display:block; font-size:0.7rem; color:#7C8B80; letter-spacing:0.04em;
+    padding-bottom:10px; margin-bottom:12px; border-bottom:1px solid rgba(248,247,240,0.14);
+  }
+  .readout.diagram{ white-space:pre; overflow-x:auto; line-height:1.55; }
+
+  /* ---------- SPLIT (prose + diagram) ---------- */
+  .split{ display:grid; grid-template-columns:1.05fr 0.95fr; gap:44px; align-items:start; }
+  @media (max-width:860px){ .split{ grid-template-columns:1fr; gap:28px; } }
+  .split p.body{ color:var(--ink-soft); font-size:1rem; }
+  .split p.body + p.body{ margin-top:14px; }
+  .note{ font-family:'IBM Plex Mono', monospace; font-size:0.76rem; color:var(--ink-faint); line-height:1.6; }
+  .note-block{ margin-top:28px; padding-top:18px; border-top:1px solid var(--line); }
   .engine-plus{ font-size:1.3rem; color:var(--ink-faint); transition:transform 220ms ease; flex-shrink:0; }
   .engine.open .engine-plus{ transform:rotate(45deg); }
 
@@ -236,6 +251,15 @@
   .compare-scroll{ overflow-x:auto; border:1px solid var(--line); border-radius:4px; }
   .compare-scroll table{ min-width:680px; }
   .compare-scroll .compare-table thead th, .compare-scroll .compare-table td{ padding-left:20px; padding-right:20px; }
+  @media (max-width:640px){
+    .compare-scroll.pair table{ min-width:0; }
+    .compare-scroll.pair thead{ display:none; }
+    .compare-scroll.pair tbody tr{ display:block; border-bottom:1px solid var(--line); }
+    .compare-scroll.pair tbody tr:last-child{ border-bottom:none; }
+    .compare-scroll.pair tbody td{ display:block; border-bottom:none; padding-top:10px; padding-bottom:10px; }
+    .compare-scroll.pair tbody td:first-child{ padding-top:16px; }
+    .compare-scroll.pair tbody td:last-child{ padding-bottom:16px; }
+  }
 
   .works-with{
     margin-top:44px; padding-top:36px; border-top:1px solid var(--line);
@@ -302,14 +326,15 @@
   <div class="wrap nav">
     <a href="#" class="brand">Saccoflow <small>AI</small></a>
     <nav class="links">
-      <a href="#platform">Platform</a>
-      <a href="#intelligence">Intelligence</a>
-      <a href="#compare">Positioning</a>
-      <a href="#packages">Packages</a>
+      <a href="#position">How it works</a>
+      <a href="#access">For members</a>
+      <a href="#intelligence">AI</a>
+      <a href="#security">Safety</a>
+      <a href="#faq">FAQ</a>
       <a href="#contact">Contact</a>
     </nav>
     <div class="nav-cta">
-      <a href="#contact" class="btn btn-primary">Talk to sales</a>
+      <a href="#contact" class="btn btn-primary">Talk to us</a>
     </div>
   </div>
 </header>
@@ -318,96 +343,210 @@
   <div class="wrap hero-grid">
     <div>
       <span class="badge"><span class="dot"></span>A NairoBytes venture</span>
-      <h1>SACCOs run on trust. Now they can run on intelligence too.</h1>
-      <p class="lede">Saccoflow is the AI operating system for SACCO lending and member operations — risk scoring, KYC, collections and reporting handled by software, with your loans officer still making every call.</p>
+      <h1>Make your SACCO easier to use.</h1>
+      <p class="lede">Saccoflow works with the SACCO system you already have. Your members get a simple app to check savings, apply for loans, deposit, withdraw and repay — with AI guiding them the whole way.</p>
       <div class="hero-actions">
-        <a href="#contact" class="btn btn-primary">Talk to sales</a>
-        <a href="#platform-how" class="btn btn-ghost">See how it works</a>
+        <a href="#contact" class="btn btn-primary">Talk to us</a>
+        <a href="#position" class="btn btn-ghost">See how it works</a>
       </div>
     </div>
     <div class="passbook">
       <div class="passbook-head">
-        <strong style="font-family:'Fraunces',serif;">Ledger</strong>
-        <span>as of today</span>
+        <strong style="font-family:'Fraunces',serif;">In short</strong>
+        <span>what to expect</span>
       </div>
       <div class="passbook-row">
-        <span class="label">SACCOs running on Saccoflow across East Africa</span>
-        <span class="value">100+</span>
+        <span class="label">Your current SACCO system</span>
+        <span class="value teal" style="font-size:1.05rem;">Stays as it is</span>
       </div>
       <div class="passbook-row">
-        <span class="label">Loan processing time, before → after</span>
-        <span class="value teal">5d → 4h</span>
+        <span class="label">What your members get</span>
+        <span class="value" style="font-size:1.05rem;">An app that works</span>
       </div>
       <div class="passbook-row">
-        <span class="label">Lift in member satisfaction scores</span>
-        <span class="value gold">+45%</span>
+        <span class="label">What your staff get</span>
+        <span class="value" style="font-size:1.05rem;">Less paperwork</span>
       </div>
       <div class="passbook-row">
-        <span class="label">Backed by</span>
+        <span class="label">Who holds the records</span>
+        <span class="value gold" style="font-size:1.05rem;">You do</span>
+      </div>
+      <div class="passbook-row">
+        <span class="label">Built by</span>
         <span class="value" style="font-size:1.05rem;">NairoBytes</span>
       </div>
+    </div>
+    </div>
     </div>
   </div>
 </section>
 
-<section id="platform-how">
+<section id="position">
   <div class="wrap">
     <div class="section-head">
-      <h2>Why SACCOs hit a wall before they hit a market</h2>
-      <p>The core workflows — onboarding, origination, risk, disbursement, repayment, support — are standard. The policy on top of them never is. That's why generic banking software gets rejected and paper survives.</p>
+      <h2>You keep your system. We make it easier to use.</h2>
+      <p>Your SACCO already has a system that keeps member accounts, savings and loans. We don't ask you to throw it away. We sit on top of it and give your members and staff a much simpler way to get things done.</p>
     </div>
 
     <div class="pso">
       <div>
         <span class="num mono">01</span>
-        <h3>Problem</h3>
-        <p class="body">Manual loan approvals, member onboarding and reporting mean slow turnaround, inconsistent risk calls, and no real analytics — usually run by one overworked loans officer.</p>
+        <h3>What you have</h3>
+        <p class="body">A system holding your members' savings, loans and records, and the rules your SACCO has agreed on.</p>
       </div>
       <div>
         <span class="num mono">02</span>
-        <h3>Solution</h3>
-        <p class="body">AI-assisted risk assessment, automated KYC onboarding, live financial dashboards and a member chatbot, covering everything from application to disbursement with a full audit trail.</p>
+        <h3>What we add</h3>
+        <p class="body">An app for your members, simpler tools for your staff, and AI that helps both of them get answers and finish tasks.</p>
       </div>
       <div>
         <span class="num mono">03</span>
-        <h3>Outcome</h3>
-        <p class="body">SACCOs scale membership without scaling headcount, and officers work off a scored, ranked queue instead of a stack of paper files.</p>
-        <p class="metric">5 days → 4 hours &nbsp;·&nbsp; +45% satisfaction</p>
+        <h3>What doesn't change</h3>
+        <p class="body">Your records, your loan rules, and who approves what. We don't take over any of that.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section>
+<section id="integration">
   <div class="wrap">
     <div class="section-head">
-      <h2>How a loan actually moves through Saccoflow</h2>
-      <p>One path, from a member's first message to money in their account.</p>
+      <h2>We connect to what you already run</h2>
+      <p>Every SACCO's setup is different. We look at the system you use today, work out how to connect to it, and handle that part with you and your system provider. You don't need to change anything on your side to get started.</p>
+    </div>
+
+    <div class="split">
+      <div>
+        <p class="body">Once we're connected, what your members see in the app comes straight from your own system — their savings, their loans, their balances. Nothing is made up and nothing is kept separately.</p>
+        <p class="body">If something can't be connected, we tell you early and plainly, instead of promising it anyway.</p>
+      </div>
+      <div class="readout diagram">
+<span class="cap">HOW IT FITS TOGETHER</span>     MEMBERS &amp; STAFF
+             │
+      <span class="accent">S A C C O F L O W</span>
+    the app and the AI
+             │
+             ▼
+   <span class="accent">YOUR SACCO SYSTEM</span>
+  savings · loans · records
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="member-experience">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>What a member actually does</h2>
+      <p>No queue, no forms, no calling the office to ask a simple question.</p>
     </div>
     <div class="flow">
       <div class="flow-step">
         <span class="idx mono">01</span>
-        <div><h4>Member applies</h4><p>Through whichever channel the SACCO already uses — WhatsApp, USSD, or the web portal. No new habit to learn.</p></div>
+        <div><h4>They ask</h4><p>"How much can I borrow?" — in their own words, on their phone.</p></div>
       </div>
       <div class="flow-step">
         <span class="idx mono">02</span>
-        <div><h4>Automated KYC</h4><p>ID and mobile-money history are checked automatically, before the application reaches a human.</p></div>
+        <div><h4>We check with your system</h4><p>Their savings, contributions and any loans they already have.</p></div>
       </div>
       <div class="flow-step">
         <span class="idx mono">03</span>
-        <div><h4>Risk scoring</h4><p>A model trained on SACCO-specific default patterns, augmented with the transactional data the SACCO already holds, scores the application.</p></div>
+        <div><h4>We apply your SACCO's rules</h4><p>Your loan products, your limits, your requirements — not someone else's.</p></div>
       </div>
       <div class="flow-step">
         <span class="idx mono">04</span>
-        <div><h4>Officer reviews a ranked queue</h4><p>Not a stack of paper — a queue sorted by risk, with the reasoning behind every score. The officer still decides and approves.</p></div>
+        <div><h4>They get a straight answer</h4><p>What they qualify for, and what they'd need to do next.</p></div>
       </div>
       <div class="flow-step">
         <span class="idx mono">05</span>
-        <div><h4>Disbursement over M-Pesa</h4><p>Funds move the moment an officer approves. No separate banking step, no manual entry.</p></div>
+        <div><h4>And they can act on it right there</h4><p>Apply for the loan, deposit, withdraw, repay or check a balance — in the same place.</p></div>
       </div>
       <div class="flow-step">
         <span class="idx mono">06</span>
-        <div><h4>Repayment and support, automated</h4><p>Scheduling, reminders and grace periods run themselves. A member chatbot handles balances, statements and top-ups without a human touch.</p></div>
+        <div><h4>Your office sees it too</h4><p>The request lands with your staff, with everything they need to act on it.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="access">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Everything a member comes to the SACCO for</h2>
+      <p>The things members normally queue, call or fill in a form for, done from the app.</p>
+    </div>
+
+    <div class="packages">
+      <div class="package">
+        <span class="kicker mono">01 · Loans</span>
+        <h3>Loans</h3>
+        <p class="for">See what you qualify for and apply without coming in.</p>
+        <ul>
+          <li>What loans are available</li>
+          <li>How much you can borrow</li>
+          <li>Apply from the app</li>
+          <li>Follow your application</li>
+        </ul>
+      </div>
+
+      <div class="package">
+        <span class="kicker mono">02 · Savings</span>
+        <h3>Savings</h3>
+        <p class="for">Your savings, shown clearly and up to date.</p>
+        <ul>
+          <li>Your balance</li>
+          <li>Your contributions</li>
+          <li>Your statements</li>
+          <li>Straight from the SACCO's records</li>
+        </ul>
+      </div>
+
+      <div class="package">
+        <span class="kicker mono">03 · Deposits</span>
+        <h3>Deposits</h3>
+        <p class="for">Put money into your SACCO account from your phone.</p>
+        <ul>
+          <li>Deposit from the app</li>
+          <li>Confirmation you can keep</li>
+          <li>Shows up in your account</li>
+          <li>No trip to the office</li>
+        </ul>
+      </div>
+
+      <div class="package">
+        <span class="kicker mono">04 · Withdrawals</span>
+        <h3>Withdrawals</h3>
+        <p class="for">Request a withdrawal and see where it has reached.</p>
+        <ul>
+          <li>Make the request in the app</li>
+          <li>Your SACCO's limits apply</li>
+          <li>Your office approves as usual</li>
+          <li>You can see the status</li>
+        </ul>
+      </div>
+
+      <div class="package">
+        <span class="kicker mono">05 · Repayments</span>
+        <h3>Repayments</h3>
+        <p class="for">Know what's due and pay it off without guesswork.</p>
+        <ul>
+          <li>What you owe and when</li>
+          <li>Repay from the app</li>
+          <li>Reminders before the due date</li>
+          <li>Receipts and history</li>
+        </ul>
+      </div>
+
+      <div class="package">
+        <span class="kicker mono">06 · Help</span>
+        <h3>Answers</h3>
+        <p class="for">Questions answered any time, without calling the office.</p>
+        <ul>
+          <li>Ask anything about your account</li>
+          <li>How products and rules work</li>
+          <li>What you need to qualify</li>
+          <li>A real person when it matters</li>
+        </ul>
       </div>
     </div>
   </div>
@@ -416,29 +555,26 @@
 <section id="intelligence">
   <div class="wrap">
     <div class="section-head">
-      <h2>The moat isn't the software. It's the intelligence layer.</h2>
-      <p>Loan processing and M-Pesa integration are table stakes now — most SACCO platforms have them. Saccoflow's edge is five engines that sit on top of any core.</p>
+      <h2>AI that sits on top of all of it</h2>
+      <p>Not a chatbot bolted on the side. The AI runs through the whole app — guiding members around it, answering their money questions, helping them plan, and giving your staff a hand with the heavy lifting.</p>
     </div>
 
     <div class="engines">
       <div class="engine open">
         <button class="engine-head" onclick="toggleEngine(this)">
-          <span>Credit intelligence</span>
-          <span class="tag">risk &amp; underwriting</span>
+          <span>It guides members through the app</span>
+          <span class="tag">for members</span>
         </button>
         <div class="engine-body">
           <div class="engine-body-inner">
-            <p>Not a bare score — a full underwriting readout. Every recommendation comes with a default probability, a suggested limit and term, and the specific factors driving it, so the officer gets a co-pilot instead of a black box.</p>
+            <p>Members don't have to hunt through menus. They say what they want and the AI takes them there, fills in what it already knows, and walks them through the rest. For members who aren't comfortable with apps, this is the difference between using the SACCO and giving up on it.</p>
             <div class="readout">
-<span class="k">Loan recommendation:</span> <span class="accent">Approve</span><br>
-<span class="k">Probability of default:</span> 3.8%<br>
-<span class="k">Recommended limit:</span> KES 185,000<br>
-<span class="k">Recommended term:</span> 12 months<br>
-<span class="k">Confidence:</span> 91%<br><br>
-<span class="k">Key factors —</span><br>
-&nbsp;&nbsp;18mo consistent contributions<br>
-&nbsp;&nbsp;94% historical repayment rate<br>
-&nbsp;&nbsp;stable income pattern
+<span class="cap">IN THE APP</span>
+<span class="k">Member:</span> "I want to repay my loan."<br>
+<span class="k">Saccoflow:</span> Opens the repayment,<br>
+shows what's due, and takes them<br>through it step by step.<br><br>
+<span class="k">Member:</span> "Where do I see my statement?"<br>
+<span class="k">Saccoflow:</span> Takes them straight there.
             </div>
           </div>
         </div>
@@ -446,16 +582,20 @@
 
       <div class="engine">
         <button class="engine-head" onclick="toggleEngine(this)">
-          <span>Operations copilot</span>
-          <span class="tag">for SACCO managers</span>
+          <span>A financial copilot for every member</span>
+          <span class="tag">for members</span>
         </button>
         <div class="engine-body">
           <div class="engine-body-inner">
-            <p>Ask it directly, in plain language, instead of building another dashboard: portfolio growth this quarter, which products are defaulting, which branch is underperforming, or a ready management report.</p>
+            <p>Most members never get financial advice. The copilot looks at their own savings and loans and helps them think it through — what they can afford, what a loan would cost them each month, how to clear it faster, and what saving a bit more would do. It explains, it doesn't push.</p>
             <div class="readout">
-"Which loan products have the<br>highest default rates?"<br><br>
-"Show me members likely to<br>default next month."<br><br>
-"Generate the management report."
+<span class="cap">WHAT MEMBERS ASK</span>
+"Can I afford this loan?"<br>
+"What will I pay each month?"<br>
+"How do I clear this faster?"<br>
+"How much should I be saving?"<br>
+"Why did my limit change?"<br><br>
+<span class="k">Answered from</span> <span class="accent">their own SACCO records</span>
             </div>
           </div>
         </div>
@@ -463,17 +603,21 @@
 
       <div class="engine">
         <button class="engine-head" onclick="toggleEngine(this)">
-          <span>Member agent</span>
-          <span class="tag">WhatsApp · USSD · web</span>
+          <span>Risk scoring on loan applications</span>
+          <span class="tag">for your loans team</span>
         </button>
         <div class="engine-body">
           <div class="engine-body-inner">
-            <p>A genuine agent, not a menu tree. A member can ask what they're eligible for and apply in the same conversation — balances, statements, top-ups and complaints included.</p>
+            <p>Every application comes to your officer with a view of the risk and the reasons behind it — how steadily the member has been saving, how they've repaid before, what they already owe. Your officer still decides. It just means they're not starting from a blank page on every file.</p>
             <div class="readout">
-<span class="k">Member:</span> "How much can I borrow?"<br>
-<span class="k">Agent:</span> "You're eligible for up to<br>KES 185,000, based on your savings<br>and SACCO policy."<br>
-<span class="k">Member:</span> "Apply for it."<br>
-<span class="k">Agent:</span> Application started.
+<span class="cap">EXAMPLE — THIS IS AN ILLUSTRATION</span>
+<span class="k">Risk:</span> <span class="accent">Low</span><br>
+<span class="k">Fits your rules:</span> Yes<br><br>
+<span class="k">Why —</span><br>
+&nbsp;&nbsp;saves consistently<br>
+&nbsp;&nbsp;good repayment history<br>
+&nbsp;&nbsp;no heavy existing loans<br><br>
+<span class="k">Decision:</span> <span class="accent">your officer's</span>
             </div>
           </div>
         </div>
@@ -481,16 +625,19 @@
 
       <div class="engine">
         <button class="engine-head" onclick="toggleEngine(this)">
-          <span>Collections intelligence</span>
-          <span class="tag">portfolio performance</span>
+          <span>A hand for your staff</span>
+          <span class="tag">for your office</span>
         </button>
         <div class="engine-body">
           <div class="engine-body-inner">
-            <p>Instead of a blanket reminder, a prioritised queue of who's actually likely to slip — so the officer calls the member 4 days from default before sending an automated nudge to someone who was never at risk.</p>
+            <p>The work that eats your officers' days — pulling up a member's history, answering the same question for the tenth time, writing up a file, working out who to follow up on this week. The AI does the digging and drafting; your team does the deciding.</p>
             <div class="readout">
-Member A — 87% risk — 4 days out — <span class="accent">Call</span><br>
-Member B — 61% risk — 11 days out — WhatsApp<br>
-Member C — 12% risk — — — Auto reminder
+<span class="cap">WHAT IT HELPS WITH</span>
+<span class="k">·</span> Looking up a member's record<br>
+<span class="k">·</span> Answering member questions<br>
+<span class="k">·</span> Writing up loan files<br>
+<span class="k">·</span> Who to follow up on, and when<br>
+<span class="k">·</span> Drafting messages and summaries
             </div>
           </div>
         </div>
@@ -498,21 +645,97 @@ Member C — 12% risk — — — Auto reminder
 
       <div class="engine">
         <button class="engine-head" onclick="toggleEngine(this)">
-          <span>Regulatory &amp; management intelligence</span>
-          <span class="tag">SASRA &amp; audit</span>
+          <span>Straight answers for management</span>
+          <span class="tag">for management &amp; the board</span>
         </button>
         <div class="engine-body">
           <div class="engine-body-inner">
-            <p>The monthly reporting package builds itself: data-completeness checks, anomaly detection, the required metrics, and an audit trail the officer reviews rather than assembles by hand.</p>
+            <p>Ask the question instead of waiting for a report. How the loan book is doing, where arrears are building up, how savings are moving, which products members actually use.</p>
             <div class="readout">
-"Prepare the monthly SASRA<br>reporting package."<br><br>
-1. Checking data completeness<br>
-2. Flagging anomalies<br>
-3. Calculating required metrics<br>
-4. Generating report + audit trail
+<span class="cap">WHAT MANAGEMENT ASKS</span>
+"How is the loan book doing?"<br>
+"Where are arrears building up?"<br>
+"How are savings moving?"<br>
+"Which products are members using?"
             </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <div class="note-block">
+      <p class="note">The AI works from your SACCO's own records and your own rules. It helps people decide — it doesn't approve loans or move money on its own.</p>
+    </div>
+  </div>
+</section>
+
+<section id="rails">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>How money moves</h2>
+      <p>Money moves the way it already does for your SACCO — through mobile money and your bank. We just make it happen from the app, and make sure it ends up recorded in your system.</p>
+    </div>
+
+    <div class="split">
+      <div>
+        <p class="body">When a member deposits, repays or withdraws, we start the payment, follow it through, and show the member and your office the same status at the same time.</p>
+        <p class="body">We're not a bank and we don't hold your members' money. Your SACCO's system stays the record of who has what.</p>
+      </div>
+      <div class="readout diagram">
+<span class="cap">WHO DOES WHAT</span>   <span class="accent">YOUR SACCO SYSTEM</span>
+  keeps the records
+          ▲
+          │
+    <span class="accent">S A C C O F L O W</span>
+   starts and tracks it
+          │
+          ▼
+   <span class="k">MOBILE MONEY · BANK</span>
+     moves the money
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="security">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Built carefully, because it's people's money</h2>
+      <p>Nothing clever here — just the basics done properly.</p>
+    </div>
+
+    <div class="packages">
+      <div class="package">
+        <span class="kicker mono">01</span>
+        <h3>Only the right people</h3>
+        <p class="for">Members see their own accounts. Staff see what their role allows.</p>
+        <ul>
+          <li>Members sign in securely</li>
+          <li>Staff access by role</li>
+          <li>Nobody sees what they shouldn't</li>
+        </ul>
+      </div>
+
+      <div class="package">
+        <span class="kicker mono">02</span>
+        <h3>Nothing gets lost</h3>
+        <p class="for">Every payment is tracked, and a repeat tap never pays twice.</p>
+        <ul>
+          <li>Every transaction has a reference</li>
+          <li>No double deductions</li>
+          <li>Clear status at every point</li>
+        </ul>
+      </div>
+
+      <div class="package">
+        <span class="kicker mono">03</span>
+        <h3>You stay in charge</h3>
+        <p class="for">Your rules, your approvals, and a record of what happened.</p>
+        <ul>
+          <li>Your SACCO approves what it always approved</li>
+          <li>A trail you can check later</li>
+          <li>Your data stays yours</li>
+        </ul>
       </div>
     </div>
   </div>
@@ -521,62 +744,47 @@ Member C — 12% risk — — — Auto reminder
 <section id="compare">
   <div class="wrap">
     <div class="section-head">
-      <h2>Where Saccoflow sits in the market</h2>
-      <p>SACCO software in East Africa is a crowded field. Most of it competes on core banking features. Saccoflow doesn't try to out-feature the incumbents — it's the intelligence layer that can sit on top of any of them.</p>
+      <h2>You don't need to replace anything</h2>
+      <p>The quickest way to explain Saccoflow is to be clear about what we do and what we don't.</p>
     </div>
 
-    <div class="compare-scroll">
+    <div class="compare-scroll pair">
       <table class="compare-table">
         <thead>
-          <tr><th>Category</th><th>Where they're strong</th><th>Where Saccoflow differs</th></tr>
+          <tr><th>What we do</th><th>What we don't do</th></tr>
         </thead>
         <tbody>
-          <tr>
-            <td class="cat">Legacy SACCO MIS</td>
-            <td class="strength">Deep, long-established SACCO-specific workflows</td>
-            <td class="strength">Adds a scoring, collections and reporting layer without a system replacement</td>
-          </tr>
-          <tr>
-            <td class="cat">Modern SACCO core</td>
-            <td class="strength">Modern UX, mobile money integrations, end-to-end platforms</td>
-            <td class="strength">Goes further on explainable underwriting, not just processing</td>
-          </tr>
-          <tr>
-            <td class="cat">Enterprise core banking</td>
-            <td class="strength">Enterprise-grade infrastructure and reliability</td>
-            <td class="strength">Faster to deploy on top of an existing core, no infrastructure migration</td>
-          </tr>
-          <tr>
-            <td class="cat">Digital lending platforms</td>
-            <td class="strength">Loan administration and disbursement automation</td>
-            <td class="strength">Purpose-built for SACCO governance, not generic MFI lending</td>
-          </tr>
-          <tr>
-            <td class="cat">AI lending infrastructure</td>
-            <td class="strength">AI-assisted credit decisioning</td>
-            <td class="strength">Extends AI past underwriting into collections, operations and compliance</td>
-          </tr>
-          <tr>
-            <td class="cat">Digital SACCO banking</td>
-            <td class="strength">Strong member-facing digital experience</td>
-            <td class="strength">Pairs the member experience with officer-facing decision support</td>
-          </tr>
           <tr class="us">
-            <td class="cat">Saccoflow AI</td>
-            <td class="strength">100+ SACCOs live across East Africa, backed by NairoBytes</td>
-            <td class="strength">An AI-native intelligence layer — credit, operations, member, collections and compliance in one</td>
+            <td class="strength"><span style="color:var(--teal);">✓</span> &nbsp;Work with the system you already have</td>
+            <td class="strength"><span style="color:var(--rust);">✗</span> &nbsp;Ask you to replace your SACCO system</td>
+          </tr>
+          <tr>
+            <td class="strength"><span style="color:var(--teal);">✓</span> &nbsp;Give your members an app that works</td>
+            <td class="strength"><span style="color:var(--rust);">✗</span> &nbsp;Take over your accounting</td>
+          </tr>
+          <tr>
+            <td class="strength"><span style="color:var(--teal);">✓</span> &nbsp;Take the repetitive work off your staff</td>
+            <td class="strength"><span style="color:var(--rust);">✗</span> &nbsp;Keep your members' money</td>
+          </tr>
+          <tr>
+            <td class="strength"><span style="color:var(--teal);">✓</span> &nbsp;Add AI that helps members and staff</td>
+            <td class="strength"><span style="color:var(--rust);">✗</span> &nbsp;Approve loans on your behalf</td>
+          </tr>
+          <tr>
+            <td class="strength"><span style="color:var(--teal);">✓</span> &nbsp;Follow your SACCO's own rules</td>
+            <td class="strength"><span style="color:var(--rust);">✗</span> &nbsp;Change how your SACCO decides things</td>
           </tr>
         </tbody>
       </table>
     </div>
 
     <div class="works-with">
-      <p class="eyebrow">Built to sit alongside what you already run</p>
+      <p class="eyebrow">Works with what you already have</p>
       <div class="wordmarks">
-        <span>M-Pesa disbursement</span>
-        <span>SASRA reporting</span>
-        <span>WhatsApp &amp; USSD</span>
-        <span>Your existing SACCO core</span>
+        <span>Your SACCO system</span>
+        <span>Your rules and approvals</span>
+        <span>Mobile money and your bank</span>
+        <span>Your staff and your office</span>
       </div>
     </div>
   </div>
@@ -585,50 +793,131 @@ Member C — 12% risk — — — Auto reminder
 <section id="packages">
   <div class="wrap">
     <div class="section-head">
-      <h2>Packages built around how your SACCO actually runs</h2>
-      <p>Every SACCO's policy is different, so every deployment is scoped with you. Talk to sales for a plan and a quote.</p>
+      <h2>Getting started</h2>
+      <p>Three steps. Nothing happens to your current system until you're happy with the plan.</p>
     </div>
 
     <div class="packages">
       <div class="package">
-        <span class="kicker mono">01 · Starter</span>
-        <h3>Foundations</h3>
-        <p class="for">For SACCOs digitising onboarding and loan processing for the first time.</p>
+        <span class="kicker mono">01 · Talk</span>
+        <h3>We have a conversation</h3>
+        <p class="for">You tell us what system you use and what's frustrating you.</p>
         <ul>
-          <li>Automated member onboarding &amp; KYC</li>
-          <li>Digital loan application &amp; officer queue</li>
-          <li>M-Pesa disbursement &amp; repayment scheduling</li>
-          <li>Standard reporting dashboard</li>
+          <li>What you run today</li>
+          <li>What your members struggle with</li>
+          <li>What your staff spend time on</li>
+          <li>What we can and can't do about it</li>
         </ul>
-        <a href="#contact" class="btn btn-ghost">Contact sales</a>
+        <a href="#contact" class="btn btn-ghost">Start here</a>
       </div>
 
       <div class="package feat">
-        <span class="kicker mono">02 · Growth</span>
-        <h3>Intelligence</h3>
-        <p class="for">For SACCOs ready to put AI underwriting and collections to work.</p>
+        <span class="kicker mono">02 · Connect</span>
+        <h3>We connect and go live</h3>
+        <p class="for">We link up to your system and open the app to your members.</p>
         <ul>
-          <li>Everything in Foundations</li>
-          <li>AI credit intelligence &amp; explainable scoring</li>
-          <li>Collections intelligence &amp; prioritised queues</li>
-          <li>Member AI agent on WhatsApp, USSD &amp; web</li>
-          <li>SASRA-ready audit trails</li>
+          <li>We handle the technical side</li>
+          <li>Your members get the app</li>
+          <li>Your staff get their tools</li>
+          <li>We train your team</li>
         </ul>
-        <a href="#contact" class="btn btn-primary">Contact sales</a>
+        <a href="#contact" class="btn btn-primary">Talk to us</a>
       </div>
 
       <div class="package">
-        <span class="kicker mono">03 · Enterprise</span>
-        <h3>Federation</h3>
-        <p class="for">For SACCO federations and multi-branch networks running at scale.</p>
+        <span class="kicker mono">03 · Grow</span>
+        <h3>We switch on the AI</h3>
+        <p class="for">Once things are running, the AI starts earning its keep.</p>
         <ul>
-          <li>Everything in Intelligence</li>
-          <li>Operations copilot for management reporting</li>
-          <li>Multi-branch &amp; multi-SACCO administration</li>
-          <li>Integration with your existing core system</li>
-          <li>Dedicated NairoBytes deployment team</li>
+          <li>Guidance and a copilot for members</li>
+          <li>Risk scoring for your loans team</li>
+          <li>Help with the day-to-day work</li>
+          <li>Answers for management</li>
         </ul>
-        <a href="#contact" class="btn btn-ghost">Contact sales</a>
+        <a href="#contact" class="btn btn-ghost">Ask about this</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>The questions we get asked</h2>
+      <p>Short answers, no runaround.</p>
+    </div>
+
+    <div class="engines">
+      <div class="engine open">
+        <button class="engine-head" onclick="toggleEngine(this)">
+          <span>Do we have to replace our current system?</span>
+          <span class="tag">no</span>
+        </button>
+        <div class="engine-body">
+          <div class="engine-body-inner single">
+            <p>No. It keeps running exactly as it is. We work on top of it, so your members get the app and your staff get the tools without anyone touching your records.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="engine">
+        <button class="engine-head" onclick="toggleEngine(this)">
+          <span>How do you connect to our system?</span>
+          <span class="tag">we handle it</span>
+        </button>
+        <div class="engine-body">
+          <div class="engine-body-inner single">
+            <p>That depends on the system you use, and it's our job to figure out, not yours. We talk to you and your system provider, work out the connection, and tell you straight if something won't work.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="engine">
+        <button class="engine-head" onclick="toggleEngine(this)">
+          <span>Who holds our records and our members' money?</span>
+          <span class="tag">you do</span>
+        </button>
+        <div class="engine-body">
+          <div class="engine-body-inner single">
+            <p>You do. Your system stays the record of who has saved what and who owes what. We don't hold money, and we don't keep a separate set of books.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="engine">
+        <button class="engine-head" onclick="toggleEngine(this)">
+          <span>Does the AI approve loans?</span>
+          <span class="tag">no</span>
+        </button>
+        <div class="engine-body">
+          <div class="engine-body-inner single">
+            <p>No. It does the homework — pulls the history, scores the risk, explains why — and hands it to your officer. The decision stays with your people and your rules.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="engine">
+        <button class="engine-head" onclick="toggleEngine(this)">
+          <span>What if our members aren't good with apps?</span>
+          <span class="tag">that's the point</span>
+        </button>
+        <div class="engine-body">
+          <div class="engine-body-inner single">
+            <p>That's exactly what the AI is there for. A member says what they want in their own words and it takes them there and walks them through it, instead of leaving them to hunt through menus.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="engine">
+        <button class="engine-head" onclick="toggleEngine(this)">
+          <span>Will this work with our SACCO?</span>
+          <span class="tag">let's find out</span>
+        </button>
+        <div class="engine-body">
+          <div class="engine-body-inner single">
+            <p>We've built it so it can connect to different SACCO systems without changing what members see. The only way to know for sure with yours is a short conversation about what you're running.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -637,8 +926,8 @@ Member C — 12% risk — — — Auto reminder
 <section id="contact" style="border-bottom:none; padding-bottom:70px;">
   <div class="wrap contact-grid">
     <div class="contact-block">
-      <h2>Let's scope your SACCO's deployment</h2>
-      <p class="lede">Tell us where you are today — paper, spreadsheets, or an existing core — and we'll come back with a plan, not a pitch.</p>
+      <h2>Let's talk about your SACCO</h2>
+      <p class="lede">Tell us what system you use and what you'd like to fix. We'll tell you honestly whether we can help, and how.</p>
 
       <div class="contact-details">
         <div class="contact-row">
@@ -666,38 +955,46 @@ Member C — 12% risk — — — Auto reminder
           <a class="v" href="mailto:support@saccoflow.co.ke">support@saccoflow.co.ke</a>
         </div>
       </div>
+
+      <div class="note-block">
+        <p class="note">WHAT HAPPENS NEXT · a short call about what you use today · we look at how to connect to it · you get a clear answer on what's possible</p>
+      </div>
     </div>
 
     <div class="ledger-card">
-      <p class="small mono">New enquiry</p>
-      <h3>Talk to sales</h3>
-      <form onsubmit="event.preventDefault(); this.querySelector('button').textContent='Request sent';">
-        <div class="field">
-          <label for="name">Your name</label>
-          <input id="name" type="text" placeholder="Jane Wanjiru" required>
-        </div>
+      <p class="small mono">Get in touch</p>
+      <h3>Tell us about your SACCO</h3>
+      <form onsubmit="event.preventDefault(); this.querySelector('button').textContent='Message sent';">
         <div class="field">
           <label for="sacco">SACCO name</label>
-          <input id="sacco" type="text" placeholder="e.g. Stima SACCO" required>
+          <input id="sacco" type="text" placeholder="e.g. Mwalimu SACCO" required>
         </div>
         <div class="field">
-          <label for="size">Member base</label>
+          <label for="core">System you use today</label>
+          <input id="core" type="text" placeholder="Name it, or just say 'not sure'">
+        </div>
+        <div class="field">
+          <label for="size">How many members</label>
           <select id="size">
             <option>Under 5,000 members</option>
             <option>5,000 – 20,000 members</option>
             <option>20,000+ members</option>
-            <option>SACCO federation / network</option>
+            <option>A group of SACCOs</option>
           </select>
         </div>
         <div class="field">
-          <label for="email">Work email</label>
-          <input id="email" type="email" placeholder="you@yoursacco.co.ke" required>
+          <label for="msg">What would you like to fix?</label>
+          <textarea id="msg" rows="3" placeholder="e.g. members have to come to the office just to check a loan"></textarea>
         </div>
         <div class="field">
-          <label for="msg">What are you looking to solve?</label>
-          <textarea id="msg" rows="3" placeholder="e.g. our loan approvals still take a week"></textarea>
+          <label for="name">Your name and role</label>
+          <input id="name" type="text" placeholder="Jane Wanjiru, ICT Manager" required>
         </div>
-        <button type="submit" class="btn btn-primary">Request a call</button>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" type="email" placeholder="you@yoursacco.co.ke" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Send</button>
       </form>
     </div>
   </div>
@@ -714,7 +1011,7 @@ Member C — 12% risk — — — Auto reminder
   function toggleEngine(btn){
     const engine = btn.parentElement;
     const wasOpen = engine.classList.contains('open');
-    document.querySelectorAll('.engine').forEach(e => e.classList.remove('open'));
+    engine.parentElement.querySelectorAll('.engine').forEach(e => e.classList.remove('open'));
     if(!wasOpen){ engine.classList.add('open'); }
   }
 </script>
